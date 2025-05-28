@@ -78,7 +78,7 @@ endmodule
 
 ### Example
 
-The table below given as an example. Your rename module can choose any register id for the new instructions as long as it doesn't break consistency.
+The table below given as an example. Your rename module can choose any register id for the new instructions as long as it doesn't break consistency. <br>
 ![sample_rename](img/sample_rename.png)
 
 ## Tasks:
