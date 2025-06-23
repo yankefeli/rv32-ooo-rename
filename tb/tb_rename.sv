@@ -1,24 +1,3 @@
-`timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 22.06.2025 15:19:50
-// Design Name: 
-// Module Name: tb_rename
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
 `define TEST_CYCLE_COUNT 100
 `define PRINT_OUTPUTS
 
@@ -75,23 +54,23 @@ module tb_rename(
 		reset = 1;
 		
 		//for testing manually	 		
-		#10 dinstr = {valid:1, rd:{valid:1, idx:1}, rs1:{valid:1, idx:2}, rs2:{valid:1, idx:3}, is_branch:0};  p_commit = {valid:0, idx:0, ready:0}; br_result = {valid:0, hit:0}; 
-		#10 dinstr = {valid:1, rd:{valid:1, idx:1}, rs1:{valid:1, idx:1}, rs2:{valid:0, idx:3}, is_branch:0};  p_commit = {valid:0, idx:0, ready:0}; br_result = {valid:0, hit:0}; 
-		#10 dinstr = {valid:1, rd:{valid:1, idx:5}, rs1:{valid:1, idx:2}, rs2:{valid:1, idx:6}, is_branch:0};  p_commit = {valid:1, idx:32, ready:0}; br_result = {valid:0, hit:0}; 
-		#10 dinstr = {valid:1, rd:{valid:1, idx:3}, rs1:{valid:1, idx:5}, rs2:{valid:1, idx:2}, is_branch:0};  p_commit = {valid:1, idx:33, ready:0}; br_result = {valid:0, hit:0}; 
-		#10 dinstr = {valid:1, rd:{valid:0, idx:1}, rs1:{valid:1, idx:1}, rs2:{valid:1, idx:5}, is_branch:1};  p_commit = {valid:1, idx:34, ready:0}; br_result = {valid:0, hit:0}; 
-		#10 dinstr = {valid:1, rd:{valid:1, idx:1}, rs1:{valid:0, idx:2}, rs2:{valid:0, idx:3}, is_branch:0};  p_commit = {valid:1, idx:35, ready:0}; br_result = {valid:0, hit:0}; 
-		#10 dinstr = {valid:1, rd:{valid:1, idx:4}, rs1:{valid:1, idx:0}, rs2:{valid:1, idx:5}, is_branch:0};  p_commit = {valid:0, idx:0, ready:0}; br_result = {valid:0, hit:0}; 
-		#10 dinstr = {valid:1, rd:{valid:1, idx:5}, rs1:{valid:1, idx:8}, rs2:{valid:1, idx:1}, is_branch:0};  p_commit = {valid:0, idx:0, ready:0}; br_result = {valid:0, hit:0}; 
-		#10 dinstr = {valid:1, rd:{valid:1, idx:7}, rs1:{valid:1, idx:5}, rs2:{valid:1, idx:1}, is_branch:0};  p_commit = {valid:0, idx:0, ready:0}; br_result = {valid:1, hit:0}; 
-		#10 dinstr = {valid:1, rd:{valid:1, idx:8}, rs1:{valid:1, idx:5}, rs2:{valid:1, idx:7}, is_branch:0};  p_commit = {valid:0, idx:0, ready:0}; br_result = {valid:0, hit:0}; 
-		#10 dinstr = {valid:1, rd:{valid:0, idx:1}, rs1:{valid:1, idx:5}, rs2:{valid:0, idx:3}, is_branch:1};  p_commit = {valid:0, idx:0, ready:0}; br_result = {valid:0, hit:0}; 
-		#10 dinstr = {valid:1, rd:{valid:1, idx:6}, rs1:{valid:1, idx:0}, rs2:{valid:0, idx:3}, is_branch:0};  p_commit = {valid:1, idx:36, ready:0}; br_result = {valid:0, hit:0}; 
-		#10 dinstr = {valid:1, rd:{valid:1, idx:2}, rs1:{valid:1, idx:1}, rs2:{valid:1, idx:7}, is_branch:0};  p_commit = {valid:0, idx:0, ready:0}; br_result = {valid:0, hit:0}; 
-		#10 dinstr = {valid:1, rd:{valid:1, idx:1}, rs1:{valid:1, idx:6}, rs2:{valid:1, idx:1}, is_branch:0};  p_commit = {valid:1, idx:37, ready:0}; br_result = {valid:1, hit:1}; 
-		#10 dinstr = {valid:1, rd:{valid:1, idx:9}, rs1:{valid:1, idx:8}, rs2:{valid:1, idx:8}, is_branch:0};  p_commit = {valid:1, idx:38, ready:0}; br_result = {valid:0, hit:0}; 
-		#10 dinstr = {valid:1, rd:{valid:1, idx:10}, rs1:{valid:1, idx:3}, rs2:{valid:1, idx:4}, is_branch:0}; p_commit = {valid:1, idx:39, ready:0}; br_result = {valid:0, hit:0};
-		#10 dinstr = {valid:0, rd:{valid:1, idx:10}, rs1:{valid:0, idx:3}, rs2:{valid:0, idx:4}, is_branch:0}; p_commit = {valid:0, idx:39, ready:0}; br_result = {valid:0, hit:0};
+		// #10 dinstr = {valid:1, rd:{valid:1, idx:1}, rs1:{valid:1, idx:2}, rs2:{valid:1, idx:3}, is_branch:0};  p_commit = {valid:0, idx:0, ready:0}; br_result = {valid:0, hit:0}; 
+		// #10 dinstr = {valid:1, rd:{valid:1, idx:1}, rs1:{valid:1, idx:1}, rs2:{valid:0, idx:3}, is_branch:0};  p_commit = {valid:0, idx:0, ready:0}; br_result = {valid:0, hit:0}; 
+		// #10 dinstr = {valid:1, rd:{valid:1, idx:5}, rs1:{valid:1, idx:2}, rs2:{valid:1, idx:6}, is_branch:0};  p_commit = {valid:1, idx:32, ready:0}; br_result = {valid:0, hit:0}; 
+		// #10 dinstr = {valid:1, rd:{valid:1, idx:3}, rs1:{valid:1, idx:5}, rs2:{valid:1, idx:2}, is_branch:0};  p_commit = {valid:1, idx:33, ready:0}; br_result = {valid:0, hit:0}; 
+		// #10 dinstr = {valid:1, rd:{valid:0, idx:1}, rs1:{valid:1, idx:1}, rs2:{valid:1, idx:5}, is_branch:1};  p_commit = {valid:1, idx:34, ready:0}; br_result = {valid:0, hit:0}; 
+		// #10 dinstr = {valid:1, rd:{valid:1, idx:1}, rs1:{valid:0, idx:2}, rs2:{valid:0, idx:3}, is_branch:0};  p_commit = {valid:1, idx:35, ready:0}; br_result = {valid:0, hit:0}; 
+		// #10 dinstr = {valid:1, rd:{valid:1, idx:4}, rs1:{valid:1, idx:0}, rs2:{valid:1, idx:5}, is_branch:0};  p_commit = {valid:0, idx:0, ready:0}; br_result = {valid:0, hit:0}; 
+		// #10 dinstr = {valid:1, rd:{valid:1, idx:5}, rs1:{valid:1, idx:8}, rs2:{valid:1, idx:1}, is_branch:0};  p_commit = {valid:0, idx:0, ready:0}; br_result = {valid:0, hit:0}; 
+		// #10 dinstr = {valid:1, rd:{valid:1, idx:7}, rs1:{valid:1, idx:5}, rs2:{valid:1, idx:1}, is_branch:0};  p_commit = {valid:0, idx:0, ready:0}; br_result = {valid:1, hit:0}; 
+		// #10 dinstr = {valid:1, rd:{valid:1, idx:8}, rs1:{valid:1, idx:5}, rs2:{valid:1, idx:7}, is_branch:0};  p_commit = {valid:0, idx:0, ready:0}; br_result = {valid:0, hit:0}; 
+		// #10 dinstr = {valid:1, rd:{valid:0, idx:1}, rs1:{valid:1, idx:5}, rs2:{valid:0, idx:3}, is_branch:1};  p_commit = {valid:0, idx:0, ready:0}; br_result = {valid:0, hit:0}; 
+		// #10 dinstr = {valid:1, rd:{valid:1, idx:6}, rs1:{valid:1, idx:0}, rs2:{valid:0, idx:3}, is_branch:0};  p_commit = {valid:1, idx:36, ready:0}; br_result = {valid:0, hit:0}; 
+		// #10 dinstr = {valid:1, rd:{valid:1, idx:2}, rs1:{valid:1, idx:1}, rs2:{valid:1, idx:7}, is_branch:0};  p_commit = {valid:0, idx:0, ready:0}; br_result = {valid:0, hit:0}; 
+		// #10 dinstr = {valid:1, rd:{valid:1, idx:1}, rs1:{valid:1, idx:6}, rs2:{valid:1, idx:1}, is_branch:0};  p_commit = {valid:1, idx:37, ready:0}; br_result = {valid:1, hit:1}; 
+		// #10 dinstr = {valid:1, rd:{valid:1, idx:9}, rs1:{valid:1, idx:8}, rs2:{valid:1, idx:8}, is_branch:0};  p_commit = {valid:1, idx:38, ready:0}; br_result = {valid:0, hit:0}; 
+		// #10 dinstr = {valid:1, rd:{valid:1, idx:10}, rs1:{valid:1, idx:3}, rs2:{valid:1, idx:4}, is_branch:0}; p_commit = {valid:1, idx:39, ready:0}; br_result = {valid:0, hit:0};
+		// #10 dinstr = {valid:0, rd:{valid:1, idx:10}, rs1:{valid:0, idx:3}, rs2:{valid:0, idx:4}, is_branch:0}; p_commit = {valid:0, idx:39, ready:0}; br_result = {valid:0, hit:0};
 		
 		for(int i=0;i<`TEST_CYCLE_COUNT;i++) begin
 			next_commit_timer--;
