@@ -25,6 +25,7 @@ module rename
 // 1)  STATE REGISTERS
 // ---------------------------------------------------------------------------
 logic [P_IDX_W-1:0] rat            [ARCH_REGS];   // Register Alias Table
+logic [P_IDX_W-1:0] rat_prev       [ARCH_REGS];   // <=== YENİ: Eski fiziksel eşlemeler
 logic               phys_ready     [PHYS_REGS];   // Ready bit table
 logic [P_IDX_W-1:0] free_q         [PHYS_REGS];   // Freelist FIFO storage
 logic [$clog2(PHYS_REGS):0] free_head, free_tail, free_cnt;
@@ -32,6 +33,7 @@ logic [$clog2(PHYS_REGS):0] free_head, free_tail, free_cnt;
 // Branch snapshot
 logic                         branch_active;
 logic [P_IDX_W-1:0]           rat_snap        [ARCH_REGS];
+logic [P_IDX_W-1:0]           rat_prev_snap        [ARCH_REGS];
 logic                         phys_ready_snap [PHYS_REGS];
 logic [$clog2(PHYS_REGS):0]   free_head_snap, free_tail_snap, free_cnt_snap;
 
@@ -109,9 +111,10 @@ assign rinstr_o = rinstr_n;  // testbench aynı çevrimde okur
 always_ff @(posedge clk or negedge rst_ni) begin
     if (!rst_ni) begin
         integer i;
-        // RAT başlangıcı: x0→p0, x1→p1 ... x31→p31
-        for (i=0; i<ARCH_REGS; i++) rat[i] <= i[P_IDX_W-1:0];
-        // Ready bits = 1
+        for (i=0; i<ARCH_REGS; i++) begin
+            rat[i]      <= i[P_IDX_W-1:0];
+            rat_prev[i] <= i[P_IDX_W-1:0];  // <=== YENİ: Başlangıçta aynı
+        end
         for (i=0; i<PHYS_REGS; i++) phys_ready[i] <= 1'b1;
         // Freelist: p32..p63
         for (i=0; i<PHYS_REGS-ARCH_REGS; i++) free_q[i] <= P_IDX_W'(ARCH_REGS+i);
@@ -123,9 +126,15 @@ always_ff @(posedge clk or negedge rst_ni) begin
         // -- COMMIT --
         if (commit_fire) begin
             phys_ready[p_commit_i.idx] <= 1'b1;
-            free_q[free_tail[P_IDX_W-1:0]] <= p_commit_i.idx;
-            free_tail <= free_tail + 1;
-            free_cnt  <= free_cnt  + 1;
+
+            // Eski mapping'ten gelen fiziksel yazmaç free list'e eklenecek
+            for (int i=0; i<ARCH_REGS; i++) begin
+                if (rat[i] == p_commit_i.idx) begin
+                    free_q[free_tail[P_IDX_W-1:0]] <= rat_prev[i];
+                    free_tail <= free_tail + 1;
+                    free_cnt  <= free_cnt  + 1;
+                end
+            end
         end
 
         // -- BRANCH RESULT --
@@ -133,7 +142,10 @@ always_ff @(posedge clk or negedge rst_ni) begin
             branch_active <= 1'b0;
             if (!br_result_i.hit) begin
                 integer j;
-                for (j=0; j<ARCH_REGS; j++) rat[j] <= rat_snap[j];
+                for (j=0; j<ARCH_REGS; j++) begin
+                    rat[j]      <= rat_snap[j];
+                    rat_prev[j] <= rat_prev_snap[j];  // resetle birlikte ikisi de geri alınsın
+                end
                 for (j=0; j<PHYS_REGS; j++) phys_ready[j] <= phys_ready_snap[j];
                 free_head <= free_head_snap;
                 free_tail <= free_tail_snap;
@@ -144,15 +156,21 @@ always_ff @(posedge clk or negedge rst_ni) begin
         // -- ACCEPTED INSTRUCTION --
         if (instr_accept) begin
             if (alloc_needed && alloc_grant) begin
-                rat[dinstr_i.rd.idx] <= new_preg;
-                phys_ready[new_preg] <= 1'b0;
+                rat_prev[dinstr_i.rd.idx] <= rat[dinstr_i.rd.idx];  // <== YENİ
+                rat[dinstr_i.rd.idx]      <= new_preg;
+                phys_ready[new_preg]      <= 1'b0;
                 free_head <= free_head + 1;
                 free_cnt  <= free_cnt  - 1;
             end
             if (taking_branch) begin
                 integer k;
-                for (k=0; k<ARCH_REGS; k++) rat_snap[k] <= rat[k];
-                for (k=0; k<PHYS_REGS; k++) phys_ready_snap[k] <= phys_ready[k];
+                for (k=0; k<ARCH_REGS; k++) begin
+                    rat_snap[k] <= rat[k];
+                    rat_prev_snap[k] <= rat_prev[k];
+                end
+                for (k=0; k<PHYS_REGS; k++) begin
+                    phys_ready_snap[k] <= phys_ready[k];
+                end
                 free_head_snap <= free_head;
                 free_tail_snap <= free_tail;
                 free_cnt_snap  <= free_cnt;
